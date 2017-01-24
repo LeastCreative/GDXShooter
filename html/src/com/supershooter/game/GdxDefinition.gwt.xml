@@ -7,6 +7,7 @@
 
 	<inherits name='SuperShooter' />
 	<entry-point class='com.supershooter.game.client.HtmlLauncher' />
+	<set-configuration-property name="devModeRedirectEnabled" value="FALSE"/>
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
 </module>
