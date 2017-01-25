@@ -41,7 +41,7 @@ public class SuperShooter extends ApplicationAdapter {
 
         //draw squares to shape renderer
         shapes.begin(ShapeType.Filled);
-        shapes.setColor(1, 0, 0, 1);
+        shapes.setColor(0, 1, 0, 1);
         for (int i = 0; i < squares.length; i++) {
             squares[i].update();
             squares[i].draw(shapes);
