@@ -1,26 +1,30 @@
 # GDXShooter setup
 
+## Install Git
+https://git-scm.com/downloads
+
 ## Making sure JDK is set up in IntelliJ IDEA
-1. If there is any project open close it. 
+1. If there is any project open close it.
   * *File -> Close Project*
 2. Go to the project structure menu.
   * *Configure -> Project Defaults -> Project Structure*
 3. On the Project tab, make sure there is an SDK (JDK) selected.
-4. If not, click "New", select "JDK", and point it to the directory that has the JDK on it 
+4. If not, click "New", select "JDK", and point it to the directory that has the JDK on it
   * default location is *Program Files -> Java -> jdk.xyz_123*
 5. If nothing is there, ask yourself how you thought this would ever work without the JDK, then download it from the Oracle website and start over.
 
 ## Getting project in IntelliJ IDEA
 1. If there is any project open close it.
   * *File -> Close Project*
-2. Check out the project from Github.
-  * *Check out from Version Control -> Github*
+2. Check out the project from Git.
+       VCS -> *Check out from Version Control -> Git*
 3. In the following window, enter "https://github.com/LeastCreative/GDXShooter" for the git repository URL.
 4. If the window pops up asking you to open the IDEA project, click Yes... obviously.
 5. Don't change anything on the "Import from Gradle" window, and click OK.
-6. The project should start building. You will probably have to allow IntelliJ to access the internet.
+6. The project should start building. You will need to allow IntelliJ to access the internet, this can take some time.
 7. When the module menu pops up, make sure all of the modules are checked and click OK.
-8. The project should now be open. Chances are, something about "unindexed maven repositories" will take a few minutes. Just ignore that
+8. The project should now be open; a warning about "unindexed maven repositories" will appear. Allow it a few minutes to clear.
+9. Wait for Step 8 above to complete before proceeding.
 
 ## Configuring the project to work correctly
 1. In the strip of icons in the top right, the second one in should look like an empty select list, because that's what it is. Click it and select "Edit Configurations"
