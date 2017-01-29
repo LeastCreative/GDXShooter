@@ -4,102 +4,73 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.prism.image.ViewPort;
+import com.supershooter.game.enemy.Enemy;
+import com.supershooter.game.enemy.PingPong;
 
-import static com.badlogic.gdx.graphics.glutils.ShapeRenderer.*;
+import java.util.LinkedList;
 
+/**
+ * The main game application class, controls game logic
+ */
 public class SuperShooter extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture img;
-    ShapeRenderer shapes;
-    Camera camera;
-    Square[] squares;
+    //functional game objects
+    private SpriteBatch batch;
+    private Stage stage;
 
+    //game objects logical
+    private Player player;
+
+    /**
+     * Sets up the game objects before ever calling render.
+     */
     @Override
     public void create() {
-        camera = new OrthographicCamera(1280, 720);
+        //setup graphics
+        OrthographicCamera camera = new OrthographicCamera(1280, 720);
+        camera.setToOrtho(true);
+        FitViewport viewPort = new FitViewport(1280, 720, camera);
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
-        shapes = new ShapeRenderer();
-        shapes.setProjectionMatrix(camera.combined);
-        img = new Texture("super-shooter.png");
-        squares = new Square[98];
-        for (int i = 0; i < squares.length; i++) {
-            squares[i] = new Square(-640, 40 * i);
+        stage = new Stage(viewPort, batch);
+        Gdx.input.setInputProcessor(stage);
+
+        //setup game
+        player = new Player(stage);
+        for (int i = 0; i < 20; i++) {
+            stage.addActor(new PingPong());
         }
     }
 
+    /**
+     * The main game loop.
+     * Updates the state of all game objects, and draws them.
+     */
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        //get time passed since last render in seconds
+        float deltaTime = Gdx.graphics.getDeltaTime();
+
+        //clear the screen to white
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //draw sprites to sprite renderer
-        batch.begin();
-        batch.draw(img, 0 - img.getWidth() / 2, 0);
-        batch.end();
-
-        //draw squares to shape renderer
-        shapes.begin(ShapeType.Filled);
-        shapes.setColor(0, 1, 0, 1);
-        for (int i = 0; i < squares.length; i++) {
-            squares[i].update();
-            squares[i].draw(shapes);
-        }
-        shapes.end();
+        //draw actors to stage
+        stage.act(deltaTime);
+        stage.draw();
     }
 
-    void updateRect() {
-    }
-
+    /**
+     * Tear down
+     */
     @Override
     public void dispose() {
         batch.dispose();
-        img.dispose();
     }
 }
 
 
-class Square {
-    int x;
-    int y;
-    int speed = 5;
-
-    //0:up, 1:right, 2:down, 3:left
-    int direction = 0;
-
-
-    public Square(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void draw(ShapeRenderer target) {
-        target.rect(x, y, 20, 20);
-    }
-
-    public void update() {
-        switch (direction) {
-            case 0:
-                y -= speed;
-                if (y <= -360)
-                    direction++;
-                break;
-            case 1:
-                x += speed;
-                if (x >= 620)
-                    direction++;
-                break;
-            case 2:
-                y += speed;
-                if (y >= 340)
-                    direction++;
-                break;
-            case 3:
-                x -= speed;
-                if (x <= -640)
-                    direction = 0;
-                break;
-        }
-    }
-}

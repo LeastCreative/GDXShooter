@@ -10,8 +10,7 @@ public class DesktopLauncher {
         config.width = 1280;
         config.height = 720;
         config.title = "Test";
-        config.fullscreen = false;
-        config.foregroundFPS = 60;
+        config.foregroundFPS = 1000;
         config.forceExit = true;
         config.vSyncEnabled = false;
         new LwjglApplication(new SuperShooter(), config);
