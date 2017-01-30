@@ -24,6 +24,7 @@ public class SuperShooter extends ApplicationAdapter {
 
     //game objects logical
     private Player player;
+    private Hud hud;
 
     /**
      * Sets up the game objects before ever calling render.
@@ -41,6 +42,7 @@ public class SuperShooter extends ApplicationAdapter {
 
         //setup game
         player = new Player(stage);
+        hud = new Hud();
         for (int i = 0; i < 20; i++) {
             stage.addActor(new PingPong());
         }
@@ -62,6 +64,10 @@ public class SuperShooter extends ApplicationAdapter {
         //draw actors to stage
         stage.act(deltaTime);
         stage.draw();
+        hud.act(deltaTime);
+        if (Math.random() > .95)
+            hud.addPoints(10);
+        hud.draw();
     }
 
     /**
