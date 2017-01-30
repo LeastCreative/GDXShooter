@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public abstract class GameActor extends Actor {
     protected Vector2 velocity = new Vector2();
-    private boolean isDestroyed;
+    protected boolean isDestroyed;
 
     /**
      * @return true if this actor is destroyed
@@ -24,5 +24,6 @@ public abstract class GameActor extends Actor {
      */
     protected void destroy() {
         isDestroyed = true;
+        this.remove();
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.supershooter.game.enemy.Enemy;
+import com.supershooter.game.projectile.Projectile;
 
 /**
  * The player actor. Accepts input from the keyboard
@@ -28,10 +29,6 @@ public class Player extends GameActor {
     Player(Stage stage) {
         //all enemies will attack this player
         Enemy.player = this;
-
-        //set up the player to spawn in the middle of screen
-        this.setX(Gdx.graphics.getWidth() / 2);
-        this.setY(Gdx.graphics.getHeight() / 2);
 
         //initialize texture
         if (texture == null) {
@@ -100,6 +97,7 @@ public class Player extends GameActor {
                 return true;
             }
         });
+        respawn();
     }
 
     /**
@@ -132,6 +130,18 @@ public class Player extends GameActor {
     public void draw(Batch batch, float parentAlpha) {
         //draw to sprite batch
         batch.draw(texture, getX(), getY());
+    }
+
+    public void respawn() {
+        //set up the player to spawn in the middle of screen
+        isDestroyed = false;
+        setX(Gdx.graphics.getWidth() / 2);
+        setY(Gdx.graphics.getHeight() / 2);
+    }
+
+    public void hitBy(Projectile p) {
+        this.destroy();
+        p.destroy();
     }
 
 }

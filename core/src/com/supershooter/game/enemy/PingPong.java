@@ -68,7 +68,8 @@ public class PingPong extends Enemy {
         //occasionally will attack
         timeSinceLastAttack += delta;
         if (timeSinceLastAttack > firingSpeed) {
-            attackPlayer();
+            if (!player.isDestroyed())
+                attackPlayer();
             firingSpeed = rand.nextFloat() * 4;
         }
 
@@ -80,7 +81,9 @@ public class PingPong extends Enemy {
      */
     @Override
     public void attackPlayer() {
-        this.getStage().addActor(new Bullet(new Vector2(getX() + texture.getWidth() / 2, getY() + texture.getHeight() / 2), player));
+        Bullet newBullet = new Bullet(new Vector2(getX() + texture.getWidth() / 2, getY() + texture.getHeight() / 2), player);
+        projectiles.add(newBullet);
+        this.getStage().addActor(newBullet);
         timeSinceLastAttack = 0;
     }
 

@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public abstract class Enemy extends GameActor {
     public static Player player;
-    private ConcurrentLinkedQueue<Projectile> projectiles = new ConcurrentLinkedQueue<Projectile>();
+    protected ConcurrentLinkedQueue<Projectile> projectiles = new ConcurrentLinkedQueue<Projectile>();
 
     public abstract void attackPlayer();
 
@@ -26,6 +26,11 @@ public abstract class Enemy extends GameActor {
     void updateProjectiles(float delta) {
         for (Projectile p : projectiles) {
             p.act(delta);
+
+            //simple collision - probably not efficient
+            double dist = Math.sqrt(Math.pow(player.getX() + 5 - p.getX(), 2) + Math.pow(player.getY() + 5 - p.getY(), 2));
+            if (dist < 13 && !player.isDestroyed())
+                player.hitBy(p);
         }
     }
 

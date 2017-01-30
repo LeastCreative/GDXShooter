@@ -5,11 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.prism.image.ViewPort;
-import com.supershooter.game.enemy.Enemy;
 import com.supershooter.game.enemy.PingPong;
 
 import java.util.LinkedList;
@@ -25,6 +22,7 @@ public class SuperShooter extends ApplicationAdapter {
     //game objects logical
     private Player player;
     private Hud hud;
+    private boolean isRespawning;
 
     /**
      * Sets up the game objects before ever calling render.
@@ -43,7 +41,7 @@ public class SuperShooter extends ApplicationAdapter {
         //setup game
         player = new Player(stage);
         hud = new Hud();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             stage.addActor(new PingPong());
         }
     }
@@ -64,6 +62,21 @@ public class SuperShooter extends ApplicationAdapter {
         //draw actors to stage
         stage.act(deltaTime);
         stage.draw();
+
+        //schedule respawn 3 seconds from destroy
+        if (player.isDestroyed() && !isRespawning) {
+            isRespawning = true;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    player.respawn();
+                    stage.addActor(player);
+                    isRespawning = false;
+                    hud.addLives(-1);
+                }
+            }, 3);
+        }
+
         hud.act(deltaTime);
         if (Math.random() > .95)
             hud.addPoints(10);
