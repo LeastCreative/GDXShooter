@@ -2,6 +2,7 @@ package com.supershooter.game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.supershooter.game.projectile.Projectile;
 
 /**
  * An object that takes actions over time.
@@ -19,10 +20,16 @@ public abstract class GameActor extends Actor {
         return isDestroyed;
     }
 
+    public void hitBy(Projectile projectile) {
+        /**
+         * not implemented - do nothing
+         */
+    }
+
     /**
      * Destroys this actor
      */
-    protected void destroy() {
+    public void destroy() {
         isDestroyed = true;
         this.remove();
     }

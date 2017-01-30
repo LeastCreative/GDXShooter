@@ -2,7 +2,7 @@ package com.supershooter.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.supershooter.game.SuperShooter;
+import com.supershooter.game.Game;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
@@ -13,6 +13,6 @@ public class DesktopLauncher {
         config.foregroundFPS = 1000;
         config.forceExit = true;
         config.vSyncEnabled = false;
-        new LwjglApplication(new SuperShooter(), config);
+        new LwjglApplication(new Game(), config);
     }
 }

@@ -21,7 +21,7 @@ class Hud extends Stage {
 
     Hud() {
         super();
-        score = 1220;
+        score = 0;
         lives = 5;
 
         Table table = new Table();
@@ -43,6 +43,11 @@ class Hud extends Stage {
         table.add(livesLabel);
 
         this.addActor(table);
+    }
+
+
+    public int getLives() {
+        return lives;
     }
 
     void addPoints(int p) {

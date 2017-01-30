@@ -9,19 +9,18 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.supershooter.game.enemy.PingPong;
 
-import java.util.LinkedList;
 
 /**
  * The main game application class, controls game logic
  */
-public class SuperShooter extends ApplicationAdapter {
+public class Game extends ApplicationAdapter {
     //functional game objects
     private SpriteBatch batch;
     private Stage stage;
+    static Hud hud;
 
     //game objects logical
     private Player player;
-    private Hud hud;
     private boolean isRespawning;
 
     /**
@@ -44,6 +43,14 @@ public class SuperShooter extends ApplicationAdapter {
         for (int i = 0; i < 10; i++) {
             stage.addActor(new PingPong());
         }
+
+        //spawn new enemy every 3 seconds
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                stage.addActor(new PingPong());
+            }
+        }, 3, 4);
     }
 
     /**
@@ -66,20 +73,19 @@ public class SuperShooter extends ApplicationAdapter {
         //schedule respawn 3 seconds from destroy
         if (player.isDestroyed() && !isRespawning) {
             isRespawning = true;
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    player.respawn();
-                    stage.addActor(player);
-                    isRespawning = false;
-                    hud.addLives(-1);
-                }
-            }, 3);
+            if (hud.getLives() > 0)
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        isRespawning = false;
+                        player.respawn();
+                        stage.addActor(player);
+                        hud.addLives(-1);
+                    }
+                }, 3);
         }
 
         hud.act(deltaTime);
-        if (Math.random() > .95)
-            hud.addPoints(10);
         hud.draw();
     }
 
