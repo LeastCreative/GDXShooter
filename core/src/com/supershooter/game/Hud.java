@@ -45,14 +45,14 @@ class Hud extends Stage {
         this.addActor(table);
     }
 
-    void addPoints(int points) {
-        this.score += points;
+    void addPoints(int p) {
+        this.score += p;
         scoreLabel.setText(score + "");
     }
 
-    void addLives(int lives) {
-        this.lives += lives;
-        livesLabel.setText(score + "");
+    void addLives(int l) {
+        lives += l;
+        livesLabel.setText(lives + "");
     }
 
 }
