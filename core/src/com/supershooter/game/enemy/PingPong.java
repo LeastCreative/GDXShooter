@@ -45,7 +45,6 @@ public class PingPong extends Enemy {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(texture, getX(), getY());
-        drawProjectiles(batch);
     }
 
     /**
@@ -60,17 +59,18 @@ public class PingPong extends Enemy {
         setOrigin(getWidth() / 2, getHeight() / 2);
 
         //reverse direction to "bounce" off walls
-        if (getX() < 0 || getX() > Gdx.graphics.getWidth() - 20)
+        if (getX() < 0 && velocity.x < 0 || getX() > Gdx.graphics.getWidth() - 30 && velocity.x > 0)
             velocity.x = -velocity.x;
-        if (getY() < 0 || getY() > Gdx.graphics.getHeight() - 20)
+        if (getY() < 0 && velocity.y < 0 || getY() > Gdx.graphics.getHeight() - 30 && velocity.y > 0)
             velocity.y = -velocity.y;
 
         //occasionally will attack
-        timeSinceLastAttack += delta;
+        if (!player.isDestroyed())
+            timeSinceLastAttack += delta;
         if (timeSinceLastAttack > firingSpeed) {
             if (!player.isDestroyed())
                 attackPlayer();
-            firingSpeed = rand.nextFloat() * 4;
+            firingSpeed = rand.nextFloat() * 7;
         }
 
         moveBy(velocity.x * delta, velocity.y * delta);
@@ -81,10 +81,15 @@ public class PingPong extends Enemy {
      */
     @Override
     public void attackPlayer() {
-        Bullet newBullet = new Bullet(new Vector2(getX() + texture.getWidth() / 2, getY() + texture.getHeight() / 2), player);
+        Bullet newBullet = new Bullet(new Vector2(getX() + texture.getWidth() / 2, getY() + texture.getHeight() / 2), player.getX() + 10, player.getY() + 10);
         projectiles.add(newBullet);
         this.getStage().addActor(newBullet);
         timeSinceLastAttack = 0;
+    }
+
+    @Override
+    public int getScoreValue() {
+        return 100;
     }
 
 }

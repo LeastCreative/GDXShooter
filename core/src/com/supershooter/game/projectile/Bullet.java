@@ -16,19 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Bullet extends Projectile {
     private static Texture texture;
     private static Rectangle t = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    private static final int speed = 200;
+    private static final int speed = 500;
 
-    public Bullet(Vector2 pos, Actor target) {
+    public Bullet(Vector2 pos, float targetx, float targety) {
         if (texture == null) {
             Pixmap pm = new Pixmap(10, 10, Pixmap.Format.RGB565);
             pm.setColor(1, 1, 1, 1);
-            pm.fillCircle(4, 5, 4);
+            pm.fillCircle(5, 5, 4);
             texture = new Texture(pm);
             pm.dispose();
         }
 
-        velocity.set(target.getX() + 10 - pos.x, target.getY() + 10 - pos.y);
-        velocity.nor();
+        velocity.set(targetx - pos.x, targety - pos.y).nor();
         velocity.x *= speed;
         velocity.y *= speed;
 
@@ -57,7 +56,6 @@ public class Bullet extends Projectile {
      */
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
         batch.draw(texture, getX(), getY());
     }
 }

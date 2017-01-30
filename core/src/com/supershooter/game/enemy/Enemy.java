@@ -18,33 +18,31 @@ public abstract class Enemy extends GameActor {
 
     public abstract void attackPlayer();
 
+    public abstract int getScoreValue();
+
     /**
      * Updates the state of all projectiles
      *
      * @param delta time passed since last update in seconds
      */
     void updateProjectiles(float delta) {
-        for (Projectile p : projectiles) {
-            p.act(delta);
 
-            //simple collision - probably not efficient
-            double dist = Math.sqrt(Math.pow(player.getX() + 5 - p.getX(), 2) + Math.pow(player.getY() + 5 - p.getY(), 2));
-            if (dist < 13 && !player.isDestroyed())
-                player.hitBy(p);
+        for (Projectile p : projectiles) {
+            if (p.isDestroyed()) {
+                projectiles.remove(p);
+            } else {
+                //simple collision - probably not efficient
+                double dist = Math.sqrt(Math.pow(player.getX() + 5 - p.getX(), 2) + Math.pow(player.getY() + 5 - p.getY(), 2));
+                if (dist < 13 && !player.isDestroyed())
+                    player.hitBy(p);
+            }
+
         }
     }
 
-    /**
-     * Renders all projectiles to the rendering batch
-     *
-     * @param batch the render batch
-     */
-    void drawProjectiles(Batch batch) {
-        for (Projectile p : projectiles) {
-            if (p.isDestroyed())
-                projectiles.remove(p);
-            else
-                p.draw(batch, 1);
-        }
+    @Override
+    public void hitBy(Projectile p) {
+        destroy();
+        p.destroy();
     }
 }
