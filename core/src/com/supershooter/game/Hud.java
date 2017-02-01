@@ -53,11 +53,11 @@ public class Hud extends Stage {
     }
 
 
-    int getLives() {
+    public int getLives() {
         return lives;
     }
 
-    void setPaused(boolean paused) {
+    public void setPaused(boolean paused) {
         pauseLabel.setVisible(paused);
     }
 
@@ -66,7 +66,7 @@ public class Hud extends Stage {
         scoreLabel.setText(score.toString());
     }
 
-    void addLives(int l) {
+    public void addLives(int l) {
         lives += l;
         livesLabel.setText(lives.toString());
     }

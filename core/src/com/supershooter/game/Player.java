@@ -179,7 +179,7 @@ public class Player extends GameActor {
         batch.draw(texture, getX(), getY());
     }
 
-    void respawn() {
+    public void respawn() {
         //set up the player to spawn in the middle of screen
         isDestroyed = false;
 
