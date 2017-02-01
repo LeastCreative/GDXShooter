@@ -20,7 +20,7 @@ public class Bullet extends Projectile {
 
     public Bullet(Vector2 pos, float targetx, float targety) {
         if (texture == null) {
-            Pixmap pm = new Pixmap(10, 10, Pixmap.Format.RGB565);
+            Pixmap pm = new Pixmap(10, 10, Pixmap.Format.LuminanceAlpha);
             pm.setColor(1, 1, 1, 1);
             pm.fillCircle(5, 5, 4);
             texture = new Texture(pm);

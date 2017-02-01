@@ -24,7 +24,7 @@ public class Missile extends Projectile {
 
     public Missile(Vector2 pos, float targetx, float targety) {
         if (texture == null) {
-            Pixmap pm = new Pixmap(10, 10, Pixmap.Format.RGB565);
+            Pixmap pm = new Pixmap(10, 10, Pixmap.Format.LuminanceAlpha);
             pm.setColor(.7f, .7f, 1, 1);
             pm.fillRectangle(4, 0, 6, 10);
             Texture t = new Texture(pm);
