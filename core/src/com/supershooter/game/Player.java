@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.supershooter.game.enemy.Enemy;
-import com.supershooter.game.projectile.Bullet;
+import com.supershooter.game.projectile.Missile;
 import com.supershooter.game.projectile.Projectile;
 
-import java.util.ArrayList;
 
 /**
  * The player actor. Accepts input from the keyboard
@@ -26,7 +26,7 @@ public class Player extends GameActor {
     private Texture texture;
 
     private float speed = 300;
-    private static ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+    private static Array<Projectile> projectiles = new Array<Projectile>();
 
     //moving states
     private boolean movingUp;
@@ -35,7 +35,7 @@ public class Player extends GameActor {
     private boolean movingLeft;
 
     //bullet timing
-    private float reloadTime = .2f;
+    private final float reloadTime = .1f;
     private float timeSinceShot = 0;
 
     //shooting states
@@ -179,31 +179,31 @@ public class Player extends GameActor {
         batch.draw(texture, getX(), getY());
     }
 
-    public void respawn() {
+    void respawn() {
         //set up the player to spawn in the middle of screen
         isDestroyed = false;
 
-        setX(Gdx.graphics.getWidth() / 2);
-        setY(Gdx.graphics.getHeight() / 2);
+        setX(Gdx.graphics.getWidth() / 2 - 10);
+        setY(Gdx.graphics.getHeight() / 2 - 10);
     }
 
-    boolean isShooting() {
+    private boolean isShooting() {
         return shootingUp | shootingRight | shootingDown | shootingLeft;
     }
 
-    void shoot() {
+    private void shoot() {
         timeSinceShot = 0;
         Vector2 currPos = new Vector2(getX() + 10, getY() + 10);
-        Bullet bullet;
+        Missile bullet;
         if ((shootingUp ^ shootingDown && shootingLeft ^ shootingRight)) {
             //must be a diagonal motion
-            bullet = new Bullet(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y + (shootingUp ? -1 : 1));
+            bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y + (shootingUp ? -1 : 1));
         } else {
             //otherwise assume axis direction; assumes up and left
             if (shootingUp | shootingDown)
-                bullet = new Bullet(currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
+                bullet = new Missile(currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
             else
-                bullet = new Bullet(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
+                bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
         }
         projectiles.add(bullet);
         getStage().addActor(bullet);
@@ -212,7 +212,7 @@ public class Player extends GameActor {
     /**
      * Updates the state of all projectiles
      */
-    void updateProjectiles() {
+    private void updateProjectiles() {
         if (isDestroyed)
             return;
 
@@ -226,6 +226,8 @@ public class Player extends GameActor {
                         if (dist < 20 && !isDestroyed()) {
                             Game.hud.addPoints(e.getScoreValue());
                             e.hitBy(p);
+                            p.destroy();
+                            projectiles.removeValue(p, false);
                         }
                     }
 

@@ -11,7 +11,7 @@ import com.supershooter.game.projectile.Projectile;
  */
 public abstract class GameActor extends Actor {
     protected Vector2 velocity = new Vector2();
-    protected boolean isDestroyed;
+    boolean isDestroyed;
 
     /**
      * @return true if this actor is destroyed
@@ -29,7 +29,7 @@ public abstract class GameActor extends Actor {
     /**
      * Destroys this actor
      */
-    public void destroy() {
+    protected void destroy() {
         isDestroyed = true;
         this.remove();
     }
