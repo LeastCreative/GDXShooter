@@ -1,11 +1,9 @@
 package com.supershooter.game.enemy;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.supershooter.game.GameActor;
-import com.supershooter.game.Player;
-import com.supershooter.game.projectile.Projectile;
+import com.badlogic.gdx.utils.Array;
+import com.supershooter.game.*;
+import com.supershooter.game.projectile.*;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Abstract enemy class, share a target player instance
@@ -14,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public abstract class Enemy extends GameActor {
     public static Player player;
-    protected ConcurrentLinkedQueue<Projectile> projectiles = new ConcurrentLinkedQueue<Projectile>();
+    Array<Projectile> projectiles = new Array<Projectile>();
 
     public abstract void attackPlayer();
 
@@ -26,23 +24,20 @@ public abstract class Enemy extends GameActor {
      * @param delta time passed since last update in seconds
      */
     void updateProjectiles(float delta) {
-
         for (Projectile p : projectiles) {
             if (p.isDestroyed()) {
-                projectiles.remove(p);
+                projectiles.removeValue(p, false);
             } else {
                 //simple collision - probably not efficient
                 double dist = Math.sqrt(Math.pow(player.getX() + 5 - p.getX(), 2) + Math.pow(player.getY() + 5 - p.getY(), 2));
                 if (dist < 13 && !player.isDestroyed())
                     player.hitBy(p);
             }
-
         }
     }
 
     @Override
     public void hitBy(Projectile p) {
         destroy();
-        p.destroy();
     }
 }
