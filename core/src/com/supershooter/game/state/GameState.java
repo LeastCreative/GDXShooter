@@ -1,5 +1,6 @@
 package com.supershooter.game.state;
 
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
@@ -11,10 +12,12 @@ public abstract class GameState extends InputListener {
 
     private static final GameState PAUSED;
     private static final GameState GAME;
+    private static final GameState MENU;
 
     static {
         GAME = new RunningState();
         PAUSED = new PausedState();
+        MENU = new MenuState();
     }
 
     public static GameState current() {

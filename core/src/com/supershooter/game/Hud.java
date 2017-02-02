@@ -20,7 +20,7 @@ public class Hud extends Stage {
     private Label livesLabel;
     private Label pauseLabel;
 
-    Hud() {
+    public Hud() {
         super();
         score = 0;
         lives = 5;

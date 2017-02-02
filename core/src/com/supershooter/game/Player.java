@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.supershooter.game.enemy.Enemy;
 import com.supershooter.game.projectile.Missile;
 import com.supershooter.game.projectile.Projectile;
-
+import com.supershooter.game.screen.GameScreen;
 /**
  * The player actor. Accepts input from the keyboard
  * TODO: implement using controller
@@ -46,7 +46,7 @@ public class Player extends GameActor {
     protected Sound shoot = Gdx.audio.newSound(Gdx.files.internal("shoot1.wav"));
     protected Sound die = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
 
-    Player(Stage stage) {
+    public Player(Stage stage) {
         //all enemies will attack this player
         Enemy.player = this;
         //initialize texture
@@ -208,11 +208,9 @@ public class Player extends GameActor {
             //otherwise assume axis direction; assumes up and left
             if (shootingUp | shootingDown) {
                 bullet = new Missile(currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
-                shoot.play(1.0f);
-            }
-            else
+            } else
                 bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
-                shoot.play(1.0f);
+            shoot.play(1.0f);
         }
         projectiles.add(bullet);
         getStage().addActor(bullet);
@@ -233,7 +231,7 @@ public class Player extends GameActor {
                         Enemy e = (Enemy) a;
                         double dist = Math.sqrt(Math.pow(e.getX() + 10 - p.getX(), 2) + Math.pow(e.getY() + 10 - p.getY(), 2));
                         if (dist < 20 && !isDestroyed()) {
-                            Game.hud.addPoints(e.getScoreValue());
+                            GameScreen.hud.addPoints(e.getScoreValue());
                             e.hitBy(p);
                             p.destroy();
                             projectiles.removeValue(p, false);
