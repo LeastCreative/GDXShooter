@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Timer;
 import com.supershooter.game.Game;
+import com.supershooter.game.screen.GameScreen;
 
 /**
  * Created by evenl on 1/31/2017.
@@ -16,7 +17,7 @@ class PausedState extends GameState {
     @Override
     public boolean keyUp(InputEvent event, int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
-            Game.hud.setPaused(false);
+            GameScreen.hud.setPaused(false);
             Timer.instance().start();
             current = StateCode.RUNNING;
             return true;
@@ -34,8 +35,8 @@ class PausedState extends GameState {
         //clear the screen to white
         Gdx.gl.glClearColor(.4f, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Game.stage.draw();
-        Game.hud.draw();
+        GameScreen.stage.draw();
+        GameScreen.hud.draw();
     }
 
 }
