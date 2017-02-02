@@ -2,6 +2,7 @@ package com.supershooter.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -14,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import com.supershooter.game.enemy.Enemy;
 import com.supershooter.game.projectile.Missile;
 import com.supershooter.game.projectile.Projectile;
-
 
 /**
  * The player actor. Accepts input from the keyboard
@@ -43,6 +43,8 @@ public class Player extends GameActor {
     private boolean shootingRight;
     private boolean shootingDown;
     private boolean shootingLeft;
+    protected Sound shoot = Gdx.audio.newSound(Gdx.files.internal("shoot1.wav"));
+    protected Sound die = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
 
     Player(Stage stage) {
         //all enemies will attack this player
@@ -153,12 +155,15 @@ public class Player extends GameActor {
         if ((movingUp ^ movingDown && movingLeft ^ movingRight)) {
             //must be a diagonal motion
             moveBy((movingLeft ? -1 : 1) * speed * delta / 1.41f, (movingUp ? -1 : 1) * speed * delta / 1.14f);
+
         } else {
             //otherwise assume axis direction; assumes up and left
             if (movingUp | movingDown)
                 moveBy(0, (movingUp ? -1 : 1) * speed * delta);
+
             if (movingLeft | movingRight)
                 moveBy((movingLeft ? -1 : 1) * speed * delta, 0);
+
         }
 
         //process shooting
@@ -198,12 +203,16 @@ public class Player extends GameActor {
         if ((shootingUp ^ shootingDown && shootingLeft ^ shootingRight)) {
             //must be a diagonal motion
             bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y + (shootingUp ? -1 : 1));
+            shoot.play(1.0f);
         } else {
             //otherwise assume axis direction; assumes up and left
-            if (shootingUp | shootingDown)
+            if (shootingUp | shootingDown) {
                 bullet = new Missile(currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
+                shoot.play(1.0f);
+            }
             else
                 bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
+                shoot.play(1.0f);
         }
         projectiles.add(bullet);
         getStage().addActor(bullet);
@@ -237,6 +246,7 @@ public class Player extends GameActor {
 
     public void hitBy(Projectile p) {
         this.destroy();
+        die.play(1.0f);
         p.destroy();
     }
 
