@@ -167,6 +167,16 @@ public class Player extends GameActor {
 
         }
 
+        //player perimeter ([0,0] top left to (screenWidth() - playerwidth), screenHeight() - playerheight)
+        if (getX() > Gdx.graphics.getWidth() - 30)
+            setX(Gdx.graphics.getWidth() - 30);
+        if (getX() < 0)
+            setX(0);
+        if (getY() > Gdx.graphics.getHeight() - 30)
+            setY(Gdx.graphics.getHeight() - 30);
+        if(getY() < 0)
+            setY(0);
+
         //process shooting
         if (isShooting() && timeSinceShot > reloadTime) {
             shoot();
