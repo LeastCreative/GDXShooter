@@ -30,10 +30,16 @@ public class PingPong extends Enemy {
             pm.dispose();
         }
 
-        setX(rand.nextFloat() * Gdx.graphics.getWidth() - 30);
-        setY(rand.nextFloat() * Gdx.graphics.getHeight() - 30);
 
-        velocity.add((rand.nextFloat() - .5f) * speed, (rand.nextFloat() - .5f) * speed);
+        if (rand.nextBoolean()) {
+            setX(rand.nextFloat() * Gdx.graphics.getWidth() - 30);
+            setY(rand.nextBoolean() ? Gdx.graphics.getHeight() - 30 : 0);
+            velocity.add((rand.nextFloat() - .5f) * speed, rand.nextFloat() * speed);
+        } else {
+            setX(rand.nextBoolean() ? Gdx.graphics.getWidth() - 30 : 0);
+            setY(rand.nextFloat() * Gdx.graphics.getHeight() - 30);
+            velocity.add(rand.nextFloat() * speed, (rand.nextFloat() - .5f) * speed);
+        }
     }
 
     /**
@@ -85,6 +91,16 @@ public class PingPong extends Enemy {
         projectiles.add(newBullet);
         this.getStage().addActor(newBullet);
         timeSinceLastAttack = 0;
+    }
+
+    @Override
+    public float getWidth() {
+        return 30;
+    }
+
+    @Override
+    public float getHeight() {
+        return 30;
     }
 
     @Override
