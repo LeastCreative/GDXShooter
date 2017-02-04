@@ -22,7 +22,6 @@ public class Weirdo extends Enemy {
     private static final int height = 50;
     private static final RandomXS128 rand = new RandomXS128();
     private TextureRegion texture;
-    private Texture textures[];
     private Rectangle rectangle = new Rectangle();
     boolean clockwise;
 
@@ -33,20 +32,11 @@ public class Weirdo extends Enemy {
     private float rotation = 0;
     private Vector2 direction;
     private Vector2 targetDirection;
+    static Texture img = new Texture(Gdx.files.internal("weirdo.png"));
 
     public Weirdo() {
-        texture = new TextureRegion();
-        if (textures == null) {
-            textures = new Texture[5];
-            Pixmap pm = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-            for (int i = 0; i < 5; i++) {
-                pm.setColor(.4f - .1f * i, .6f - i * .1f, 1, 1);
-                pm.fill();
-                textures[i] = new Texture(pm);
-            }
-            texture.setTexture(textures[4]);
-            pm.dispose();
-        }
+        texture = new TextureRegion(img);
+        texture.setRegion(0, 0, 50, 50);
 
         direction = new Vector2();
         targetDirection = new Vector2();
@@ -139,7 +129,7 @@ public class Weirdo extends Enemy {
         if (lives == 0)
             destroy();
         else
-            texture.setTexture(textures[lives - 1]);
+            texture.setRegion(50 * (5 - lives), 0, 50, 50);
     }
 
     @Override
