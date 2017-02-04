@@ -31,16 +31,15 @@ public class PingPong extends Enemy {
         }
 
 
-        if(rand.nextBoolean()) {
+        if (rand.nextBoolean()) {
             setX(rand.nextFloat() * Gdx.graphics.getWidth() - 30);
-            setY(rand.nextBoolean() ? Gdx.graphics.getHeight() + 30 : -30);
-        }
-        else{
-            setX(rand.nextBoolean() ? Gdx.graphics.getWidth() + 30 : -30);
+            setY(rand.nextBoolean() ? Gdx.graphics.getHeight() - 30 : 0);
+            velocity.add((rand.nextFloat() - .5f) * speed, rand.nextFloat() * speed);
+        } else {
+            setX(rand.nextBoolean() ? Gdx.graphics.getWidth() - 30 : 0);
             setY(rand.nextFloat() * Gdx.graphics.getHeight() - 30);
+            velocity.add(rand.nextFloat() * speed, (rand.nextFloat() - .5f) * speed);
         }
-
-        velocity.add((rand.nextFloat() - .5f) * speed, (rand.nextFloat() - .5f) * speed);
     }
 
     /**

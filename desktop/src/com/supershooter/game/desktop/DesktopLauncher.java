@@ -10,7 +10,7 @@ public class DesktopLauncher {
         config.width = 1280;
         config.height = 720;
         config.title = "Test";
-        config.foregroundFPS = 1000;
+        config.foregroundFPS = 400;
         config.forceExit = true;
         config.vSyncEnabled = false;
         config.fullscreen = true;
