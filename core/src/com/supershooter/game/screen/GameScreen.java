@@ -75,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
             public void run() {
                 stage.addActor(new PingPong());
             }
-        }, .5f, 1f);
+        }, .5f, .7f);
 
 
     }
