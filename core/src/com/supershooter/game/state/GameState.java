@@ -18,6 +18,10 @@ public abstract class GameState extends InputListener {
         PAUSED = new PausedState();
     }
 
+    enum StateCode {
+        RUNNING, PAUSED
+    }
+
     public static GameState current() {
         switch (current) {
             case RUNNING:

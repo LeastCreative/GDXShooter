@@ -13,6 +13,7 @@ import com.supershooter.game.Game;
 import com.supershooter.game.Hud;
 import com.supershooter.game.Player;
 import com.supershooter.game.enemy.PingPong;
+import com.supershooter.game.enemy.Weirdo;
 import com.supershooter.game.state.GameState;
 
 /**
@@ -48,7 +49,7 @@ public class GameScreen extends ScreenAdapter {
         //setup game
         player = new Player(stage);
         hud = new Hud();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             stage.addActor(new PingPong());
         }
 
@@ -64,9 +65,19 @@ public class GameScreen extends ScreenAdapter {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                stage.addActor(new Weirdo());
+            }
+        }, 2, 5);
+        stage.addActor(new Weirdo());
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
                 stage.addActor(new PingPong());
             }
-        }, .5f, .5f);
+        }, .5f, 1f);
+
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -198,7 +199,7 @@ public class Player extends GameActor {
 
     private void shoot() {
         timeSinceShot = 0;
-        Vector2 currPos = new Vector2(getX() + 10, getY() + 10);
+        Vector2 currPos = new Vector2(getX() + 7f, getY() + 7f);
         Missile bullet;
         if ((shootingUp ^ shootingDown && shootingLeft ^ shootingRight)) {
             //must be a diagonal motion
@@ -219,6 +220,7 @@ public class Player extends GameActor {
     /**
      * Updates the state of all projectiles
      */
+    Rectangle enemyRect = new Rectangle();
     private void updateProjectiles() {
         if (isDestroyed)
             return;
@@ -229,8 +231,18 @@ public class Player extends GameActor {
                 for (Actor a : getStage().getActors()) {
                     if (a instanceof Enemy) {
                         Enemy e = (Enemy) a;
-                        double dist = Math.sqrt(Math.pow(e.getX() + 10 - p.getX(), 2) + Math.pow(e.getY() + 10 - p.getY(), 2));
-                        if (dist < 20 && !isDestroyed()) {
+
+                        //check collision with enemy/player
+                        enemyRect.set(e.getX(), e.getY(), e.getWidth(), e.getHeight());
+                        if (enemyRect.contains(getX() + 10, getY() + 10)) {
+                            this.destroy();
+                            die.play();
+                            e.destroy();
+                            return;
+                        }
+
+                        //check collision with bullet/enemy
+                        if (enemyRect.contains(p.getX() + 5, p.getY() + 5) && !isDestroyed()) {
                             GameScreen.hud.addPoints(e.getScoreValue());
                             e.hitBy(p);
                             p.destroy();
