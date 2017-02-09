@@ -2,7 +2,6 @@ package com.supershooter.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,6 +16,7 @@ import com.supershooter.game.enemy.Enemy;
 import com.supershooter.game.projectile.Missile;
 import com.supershooter.game.projectile.Projectile;
 import com.supershooter.game.screen.GameScreen;
+
 /**
  * The player actor. Accepts input from the keyboard
  * TODO: implement using controller
@@ -44,8 +44,7 @@ public class Player extends GameActor {
     private boolean shootingRight;
     private boolean shootingDown;
     private boolean shootingLeft;
-    protected Sound shoot = Gdx.audio.newSound(Gdx.files.internal("shoot1.wav"));
-    protected Sound die = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
+
 
     public Player(Stage stage) {
         //all enemies will attack this player
@@ -214,14 +213,14 @@ public class Player extends GameActor {
         if ((shootingUp ^ shootingDown && shootingLeft ^ shootingRight)) {
             //must be a diagonal motion
             bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y + (shootingUp ? -1 : 1));
-            shoot.play(1.0f);
+            AudioManager.SHOOT.play(1.0f);
         } else {
             //otherwise assume axis direction; assumes up and left
             if (shootingUp | shootingDown) {
                 bullet = new Missile(currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
             } else
                 bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
-            shoot.play(1.0f);
+            AudioManager.SHOOT.play(1.0f);
         }
         projectiles.add(bullet);
         getStage().addActor(bullet);
@@ -246,7 +245,7 @@ public class Player extends GameActor {
                         enemyRect.set(e.getX(), e.getY(), e.getWidth(), e.getHeight());
                         if (enemyRect.contains(getX() + 10, getY() + 10)) {
                             this.destroy();
-                            die.play();
+                            AudioManager.DIE.play();
                             e.destroy();
                             return;
                         }
@@ -266,7 +265,7 @@ public class Player extends GameActor {
 
     public void hitBy(Projectile p) {
         this.destroy();
-        die.play(1.0f);
+        AudioManager.DIE.play();
         p.destroy();
     }
 

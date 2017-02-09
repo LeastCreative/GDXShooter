@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Timer;
+import com.supershooter.game.AudioManager;
 import com.supershooter.game.screen.GameScreen;
 
 /**
@@ -19,6 +20,7 @@ class RunningState extends GameState {
         if (keycode == Input.Keys.ESCAPE) {
             current = StateCode.PAUSED;
             GameScreen.hud.setPaused(true);
+            AudioManager.pause();
             Timer.instance().stop();
             return true;
         }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.supershooter.game.AudioManager;
 import com.supershooter.game.Game;
 import com.supershooter.game.Hud;
 import com.supershooter.game.Player;
@@ -32,6 +33,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(final Game game) {
         this.game = game;
+        AudioManager.MUSIC.loop(1);
         reset();
     }
 
@@ -49,6 +51,7 @@ public class GameScreen extends ScreenAdapter {
         //setup game
         player = new Player(stage);
         hud = new Hud();
+
         for (int i = 0; i < 8; i++) {
             stage.addActor(new PingPong());
         }
