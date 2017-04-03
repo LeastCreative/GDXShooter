@@ -46,6 +46,8 @@ class RunningState extends GameState {
                         GameScreen.hud.addLives(-1);
                     }
                 }, 3);
+            if(GameScreen.hud.getLives() < 1 && GameScreen.player.isDestroyed())
+                System.exit(0);
         }
     }
 
