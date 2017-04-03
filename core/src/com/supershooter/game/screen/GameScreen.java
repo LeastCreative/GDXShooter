@@ -15,7 +15,8 @@ import com.supershooter.game.Hud;
 import com.supershooter.game.Player;
 import com.supershooter.game.enemy.PingPong;
 import com.supershooter.game.enemy.Weirdo;
-import com.supershooter.game.state.GameState;
+import com.supershooter.game.state.game.GameState;
+import com.supershooter.game.state.player.PlayerState;
 
 /**
  * Created by evenl on 2/1/2017.
@@ -29,7 +30,6 @@ public class GameScreen extends ScreenAdapter {
 
     //logical game objects
     public static Player player;
-    public static boolean isRespawning;
 
     public GameScreen(final Game game) {
         this.game = game;
@@ -51,7 +51,6 @@ public class GameScreen extends ScreenAdapter {
         //setup game
         player = new Player(stage);
         hud = new Hud();
-
         for (int i = 0; i < 8; i++) {
             stage.addActor(new PingPong());
         }
@@ -61,6 +60,12 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public boolean handle(Event e) {
                 return GameState.current().handle(e);
+            }
+        });
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean handle(Event e) {
+                return PlayerState.current().handle(e);
             }
         });
 
@@ -78,7 +83,7 @@ public class GameScreen extends ScreenAdapter {
             public void run() {
                 stage.addActor(new PingPong());
             }
-        }, .5f, .7f);
+        }, .5f, 1f);
 
 
     }
@@ -91,6 +96,7 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         GameState.current().update(delta);
         GameState.current().draw(batch);
+        PlayerState.current().update(player, delta);
         this.pause();
     }
 

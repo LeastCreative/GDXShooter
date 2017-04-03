@@ -61,7 +61,7 @@ public class Hud extends Stage {
         pauseLabel.setVisible(paused);
     }
 
-    void addPoints(int p) {
+    public void addPoints(int p) {
         this.score += p;
         scoreLabel.setText(score.toString());
     }

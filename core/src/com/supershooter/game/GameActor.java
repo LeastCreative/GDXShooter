@@ -29,7 +29,7 @@ public abstract class GameActor extends Actor {
     /**
      * Destroys this actor
      */
-    protected void destroy() {
+    public void destroy() {
         isDestroyed = true;
         this.remove();
     }

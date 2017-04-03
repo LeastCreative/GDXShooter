@@ -1,6 +1,5 @@
-package com.supershooter.game.state;
+package com.supershooter.game.state.game;
 
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
