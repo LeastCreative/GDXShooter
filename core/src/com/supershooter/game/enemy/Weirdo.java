@@ -143,4 +143,10 @@ public class Weirdo extends Enemy {
         else return val;
     }
 
+    @Override
+    public void destroy() {
+        isDestroyed = true;
+        this.remove();
+    }
+
 }

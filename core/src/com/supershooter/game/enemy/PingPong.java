@@ -52,6 +52,11 @@ public class PingPong extends Enemy {
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(texture, getX(), getY());
     }
+    @Override
+    public void destroy() {
+        isDestroyed = true;
+        this.remove();
+    }
 
     /**
      * Updates the state of this actor over time

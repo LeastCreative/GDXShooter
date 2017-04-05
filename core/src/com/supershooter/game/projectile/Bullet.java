@@ -34,6 +34,11 @@ public class Bullet extends Projectile {
         setX(pos.x - texture.getWidth() / 2);
         setY(pos.y - texture.getHeight() / 2);
     }
+    @Override
+    public void destroy() {
+        isDestroyed = true;
+        this.remove();
+    }
 
     /**
      * Updates the state of this actor over time

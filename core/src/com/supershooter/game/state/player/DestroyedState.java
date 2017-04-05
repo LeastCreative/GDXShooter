@@ -1,5 +1,6 @@
 package com.supershooter.game.state.player;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.supershooter.game.Player;
 import com.supershooter.game.screen.GameScreen;
@@ -7,15 +8,19 @@ import com.supershooter.game.screen.GameScreen;
 /**
  * Created by evenl on 4/2/2017.
  */
-class DestroyedState extends PlayerState {
+public class DestroyedState extends PlayerState {
     private final float DESTROY_DELAY = 3;
-
     private float currentDelay = DESTROY_DELAY;
 
-    public void update(Player player, float deltaTime) {
-        updateProjectiles(player);
+    public DestroyedState(Player player) {
+        this.player = player;
+    }
 
-        currentDelay -= deltaTime;
+    public void act(float delta) {
+        //update state
+        currentDelay -= delta;
+
+        //check state change
         if (currentDelay <= 0) {
             if (GameScreen.hud.getLives() > 0) {
                 player.respawn();
@@ -24,12 +29,12 @@ class DestroyedState extends PlayerState {
                 player.setInvincible(true);
 
                 currentDelay = DESTROY_DELAY;
-                current = PlayerStateCode.RESPAWNING;
+                player.setState(player.respawnState);
             }
         }
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(Batch batch, float parentAlpha) {
 
     }
 

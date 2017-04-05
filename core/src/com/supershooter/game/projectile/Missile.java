@@ -63,6 +63,11 @@ public class Missile extends Projectile {
             destroy();
         }
     }
+    @Override
+    public void destroy() {
+        isDestroyed = true;
+        this.remove();
+    }
 
     /**
      * Draws this bullet to the rendering batch

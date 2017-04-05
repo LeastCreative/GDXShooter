@@ -33,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(final Game game) {
         this.game = game;
-        AudioManager.MUSIC.loop(1);
+        AudioManager.MUSIC.pause();
         reset();
     }
 
@@ -65,7 +65,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addListener(new InputListener() {
             @Override
             public boolean handle(Event e) {
-                return PlayerState.current().handle(e);
+                return player.getState().handle(e);
             }
         });
 
@@ -76,8 +76,6 @@ public class GameScreen extends ScreenAdapter {
                 stage.addActor(new Weirdo());
             }
         }, 2, 5);
-        stage.addActor(new Weirdo());
-
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -85,35 +83,14 @@ public class GameScreen extends ScreenAdapter {
             }
         }, .5f, 1f);
 
-
     }
 
-    @Override
-    public void show() {
-    }
 
     @Override
     public void render(float delta) {
         GameState.current().update(delta);
         GameState.current().draw(batch);
-        PlayerState.current().update(player, delta);
         this.pause();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
     }
 
     @Override

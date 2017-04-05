@@ -19,7 +19,6 @@ import com.supershooter.game.Game;
 public class MenuScreen implements Screen {
     Skin skin;
     Stage stage;
-    SpriteBatch batch;
     Image image;
 
     final com.supershooter.game.Game game;
