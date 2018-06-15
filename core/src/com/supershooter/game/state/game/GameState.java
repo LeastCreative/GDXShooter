@@ -2,37 +2,22 @@ package com.supershooter.game.state.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.supershooter.game.screen.GameScreen;
 
 /**
  * Created by evenl on 1/31/2017.
  */
+
 public abstract class GameState extends InputListener {
-    static StateCode current = StateCode.RUNNING;
+    GameScreen screen;
 
-    private static final GameState PAUSED;
-    private static final GameState GAME;
-
-    static {
-        GAME = new RunningState();
-        PAUSED = new PausedState();
-    }
-
-    enum StateCode {
-        RUNNING, PAUSED
-    }
-
-    public static GameState current() {
-        switch (current) {
-            case RUNNING:
-                return GAME;
-            case PAUSED:
-                return PAUSED;
-            default:
-                throw new IllegalArgumentException(current.toString() + " is not valid");
-        }
+    GameState(GameScreen screen) {
+        this.screen = screen;
     }
 
     public abstract void update(float deltaTime);
+
+    public abstract GameStateCode getNextState();
 
     public abstract void draw(SpriteBatch batch);
 

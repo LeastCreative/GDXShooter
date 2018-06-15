@@ -14,13 +14,19 @@ import com.supershooter.game.screen.GameScreen;
  */
 class PausedState extends GameState {
 
+    private boolean unpause;
+
+    PausedState(GameScreen screen){
+        super(screen);
+    }
+
     @Override
     public boolean keyUp(InputEvent event, int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
             GameScreen.hud.setPaused(false);
             AudioManager.resume();
             Timer.instance().start();
-            current = StateCode.RUNNING;
+            unpause = true;
             return true;
         }
         return false;
@@ -28,7 +34,16 @@ class PausedState extends GameState {
 
     @Override
     public void update(float deltaTime) {
-        //do nothing... it is paused
+        //close pause menu if button was pressed
+    }
+
+    @Override
+    public GameStateCode getNextState() {
+        if(unpause) {
+            unpause = false;
+            return GameStateCode.RUNNING;
+        }
+        return GameStateCode.PAUSED;
     }
 
     @Override
@@ -36,8 +51,8 @@ class PausedState extends GameState {
         //clear the screen to white
         Gdx.gl.glClearColor(.4f, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        GameScreen.stage.draw();
-        GameScreen.hud.draw();
+        screen.stage.draw();
+        screen.hud.draw();
     }
 
 }

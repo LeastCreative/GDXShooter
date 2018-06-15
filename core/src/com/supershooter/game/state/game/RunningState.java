@@ -14,11 +14,16 @@ import com.supershooter.game.screen.GameScreen;
  */
 class RunningState extends GameState {
 
+    private boolean pause;
+
+    RunningState(GameScreen screen) {
+        super(screen);
+    }
 
     @Override
     public boolean keyUp(InputEvent event, int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
-            current = StateCode.PAUSED;
+            pause = true;
             GameScreen.hud.setPaused(true);
             AudioManager.pause();
             Timer.instance().stop();
@@ -30,8 +35,19 @@ class RunningState extends GameState {
     @Override
     public void update(float deltaTime) {
         //draw actors to stage
-        GameScreen.stage.act(deltaTime);
-        GameScreen.hud.act(deltaTime);
+        screen.stage.act(deltaTime);
+        screen.hud.act(deltaTime);
+
+        //check state
+    }
+
+    @Override
+    public GameStateCode getNextState() {
+        if (pause) {
+            pause = false;
+            return GameStateCode.PAUSED;
+        }
+        return GameStateCode.RUNNING;
     }
 
     @Override
@@ -39,10 +55,9 @@ class RunningState extends GameState {
         //clear the screen to white
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        GameScreen.stage.draw();
-        GameScreen.hud.draw();
+        screen.stage.draw();
+        screen.hud.draw();
     }
-
 }
 
 

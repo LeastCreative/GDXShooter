@@ -16,6 +16,7 @@ import com.supershooter.game.Player;
 import com.supershooter.game.enemy.PingPong;
 import com.supershooter.game.enemy.Weirdo;
 import com.supershooter.game.state.game.GameState;
+import com.supershooter.game.state.game.GameStateManager;
 import com.supershooter.game.state.player.PlayerState;
 
 /**
@@ -27,12 +28,14 @@ public class GameScreen extends ScreenAdapter {
     static SpriteBatch batch;
     public static Stage stage;
     public static Hud hud;
+    private GameStateManager gameState;
 
     //logical game objects
     public static Player player;
 
     public GameScreen(final Game game) {
         this.game = game;
+        this.gameState = new GameStateManager(this);
         AudioManager.MUSIC.pause();
         reset();
     }
@@ -59,7 +62,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addListener(new InputListener() {
             @Override
             public boolean handle(Event e) {
-                return GameState.current().handle(e);
+                return gameState.current().handle(e);
             }
         });
         stage.addListener(new InputListener() {
@@ -88,8 +91,8 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        GameState.current().update(delta);
-        GameState.current().draw(batch);
+        gameState.current().update(delta);
+        gameState.current().draw(batch);
         this.pause();
     }
 
