@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.supershooter.game.GameActor;
 
 /**
  * Bullet class to shoot with
@@ -18,7 +19,8 @@ public class Bullet extends Projectile {
     private static Rectangle t = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     private static final int speed = 500;
 
-    public Bullet(Vector2 pos, float targetx, float targety) {
+    public Bullet(GameActor owner, Vector2 pos, float targetx, float targety) {
+        super(owner);
         if (texture == null) {
             Pixmap pm = new Pixmap(10, 10, Pixmap.Format.LuminanceAlpha);
             pm.setColor(1, 1, 1, 1);
@@ -34,11 +36,6 @@ public class Bullet extends Projectile {
         setX(pos.x - texture.getWidth() / 2);
         setY(pos.y - texture.getHeight() / 2);
     }
-    @Override
-    public void destroy() {
-        isDestroyed = true;
-        this.remove();
-    }
 
     /**
      * Updates the state of this actor over time
@@ -48,9 +45,6 @@ public class Bullet extends Projectile {
     @Override
     public void act(float delta) {
         moveBy(velocity.x * delta, velocity.y * delta);
-        if (!t.contains(getX(), getY())) {
-            destroy();
-        }
     }
 
     /**

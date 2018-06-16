@@ -23,7 +23,7 @@ class PausedState extends GameState {
     @Override
     public boolean keyUp(InputEvent event, int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
-            GameScreen.hud.setPaused(false);
+            screen.hud.setPaused(false);
             AudioManager.resume();
             Timer.instance().start();
             unpause = true;

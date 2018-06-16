@@ -41,6 +41,8 @@ public class Player extends GameActor {
     public boolean shootingDown;
     public boolean shootingLeft;
 
+    //TODO: new state
+    boolean isInvincible = false;
 
     //states
     public final AliveState aliveState;
@@ -50,7 +52,6 @@ public class Player extends GameActor {
     PlayerState currentState;
 
 
-    public Array<Projectile> projectiles = new Array<Projectile>();
 
     public PlayerState getState() {
         return currentState;
@@ -86,7 +87,6 @@ public class Player extends GameActor {
     public void act(float delta) {
         timeSinceShot += delta;
         currentState.act(delta);
-        checkCollistions();
     }
 
     public void move(float delta) {
@@ -134,7 +134,6 @@ public class Player extends GameActor {
         setY(Gdx.graphics.getHeight() / 2 - 10);
     }
 
-    boolean isInvincible = false;
 
     public void setInvincible(boolean value) {
         isInvincible = value;
@@ -165,14 +164,14 @@ public class Player extends GameActor {
         Missile bullet;
         if ((shootingUp ^ shootingDown && shootingLeft ^ shootingRight)) {
             //must be a diagonal motion
-            bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y + (shootingUp ? -1 : 1));
+            bullet = new Missile(this, currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y + (shootingUp ? -1 : 1));
             AudioManager.SHOOT.play(1.0f);
         } else {
             //otherwise assume axis direction; assumes up and left
             if (shootingUp | shootingDown) {
-                bullet = new Missile(currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
+                bullet = new Missile(this, currPos, currPos.x, currPos.y + (shootingUp ? -1 : 1));
             } else
-                bullet = new Missile(currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
+                bullet = new Missile(this, currPos, currPos.x + (shootingLeft ? -1 : 1), currPos.y);
             AudioManager.SHOOT.play(1.0f);
         }
         projectiles.add(bullet);
@@ -184,45 +183,9 @@ public class Player extends GameActor {
     }
 
 
-    /**
-     * Updates the state of all projectiles
-     */
-    Rectangle enemyRect = new Rectangle();
-
-    public void checkCollistions() {
-        //simple collision - probably not efficient
-        if (getStage() != null)
-            for (Actor a : getStage().getActors()) {
-                if (a instanceof Enemy) {
-                    Enemy e = (Enemy) a;
-                    //check collision with enemy/player
-                    enemyRect.set(e.getX(), e.getY(), e.getWidth(), e.getHeight());
-                    if (!isInvincible && !isDestroyed) {
-                        if (enemyRect.contains(getX() + 10, getY() + 10)) {
-                            destroy();
-                            AudioManager.DIE.play();
-                            e.destroy();
-                            return;
-                        }
-                    }
-                    for (Projectile p : projectiles) {
-                        //check collision with bullet/enemy
-                        if (enemyRect.contains(p.getX() + 5, p.getY() + 5) && !isDestroyed()) {
-                            GameScreen.hud.addPoints(e.getScoreValue());
-                            e.hitBy(p);
-                            p.destroy();
-                            projectiles.removeValue(p, false);
-                            break;
-                        }
-                    }
-                }
-            }
-    }
-
     @Override
     public void destroy() {
         isDestroyed = true;
     }
-
 
 }

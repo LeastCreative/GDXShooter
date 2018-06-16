@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.supershooter.game.GameActor;
 
 
 /**
@@ -22,7 +23,8 @@ public class Missile extends Projectile {
 
     private float rotation = 0f;
 
-    public Missile(Vector2 pos, float targetx, float targety) {
+    public Missile(GameActor owner,Vector2 pos, float targetx, float targety) {
+        super(owner);
         if (texture == null) {
             Pixmap pm = new Pixmap(10, 10, Pixmap.Format.LuminanceAlpha);
             pm.setColor(.7f, .7f, 1, 1);
@@ -62,11 +64,6 @@ public class Missile extends Projectile {
         if (!t.contains(getX(), getY())) {
             destroy();
         }
-    }
-    @Override
-    public void destroy() {
-        isDestroyed = true;
-        this.remove();
     }
 
     /**

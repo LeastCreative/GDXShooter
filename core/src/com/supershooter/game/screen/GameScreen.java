@@ -4,20 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.supershooter.game.AudioManager;
 import com.supershooter.game.Game;
 import com.supershooter.game.Hud;
 import com.supershooter.game.Player;
+import com.supershooter.game.enemy.Enemy;
 import com.supershooter.game.enemy.PingPong;
 import com.supershooter.game.enemy.Weirdo;
-import com.supershooter.game.state.game.GameState;
+import com.supershooter.game.projectile.Projectile;
 import com.supershooter.game.state.game.GameStateManager;
-import com.supershooter.game.state.player.PlayerState;
 
 /**
  * Created by evenl on 2/1/2017.
@@ -91,9 +94,44 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        checkCollisions();
         gameState.current().update(delta);
         gameState.current().draw(batch);
-        this.pause();
+    }
+
+    /**
+     * Updates the state of all projectiles
+     */
+    Rectangle enemyRect = new Rectangle();
+
+    public void checkCollisions() {
+        Array<Projectile> playerProjectiles = player.getProjectiles();
+
+        //simple collision - probably not efficient
+        for (Actor a : stage.getActors()) {
+            if (a instanceof Enemy) {
+                Enemy e = (Enemy) a;
+                enemyRect.set(e.getX(), e.getY(), e.getWidth(), e.getHeight());
+
+                //check collision with enemy/player
+                if (!player.isInvincible() && !player.isDestroyed()) {
+                    if (enemyRect.contains(player.getX() + 10, player.getY() + 10)) {
+                        player.destroy();
+                        AudioManager.DIE.play();
+                        e.destroy();
+                    }
+                }
+
+                for (Projectile p : playerProjectiles) {
+                    //check collision with bullet/enemy
+                    if (enemyRect.contains(p.getX() + 5, p.getY() + 5)) {
+                        GameScreen.hud.addPoints(e.getScoreValue());
+                        e.hitBy(p);
+                        p.destroy();
+                    }
+                }
+            }
+        }
     }
 
     @Override

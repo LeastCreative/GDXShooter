@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.supershooter.game.AudioManager;
+import com.supershooter.game.enemy.Enemy;
+import com.supershooter.game.projectile.Projectile;
 import com.supershooter.game.screen.GameScreen;
 
 /**
@@ -37,8 +41,6 @@ class RunningState extends GameState {
         //draw actors to stage
         screen.stage.act(deltaTime);
         screen.hud.act(deltaTime);
-
-        //check state
     }
 
     @Override

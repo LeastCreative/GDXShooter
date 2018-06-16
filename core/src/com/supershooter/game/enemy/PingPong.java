@@ -92,7 +92,7 @@ public class PingPong extends Enemy {
      */
     @Override
     public void attackPlayer() {
-        Bullet newBullet = new Bullet(new Vector2(getX() + texture.getWidth() / 2, getY() + texture.getHeight() / 2), player.getX() + 10, player.getY() + 10);
+        Bullet newBullet = new Bullet(this, new Vector2(getX() + texture.getWidth() / 2, getY() + texture.getHeight() / 2), player.getX() + 10, player.getY() + 10);
         projectiles.add(newBullet);
         this.getStage().addActor(newBullet);
         timeSinceLastAttack = 0;

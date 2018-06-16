@@ -105,7 +105,7 @@ public class Weirdo extends Enemy {
      */
     @Override
     public void attackPlayer() {
-        Bullet newBullet = new Bullet(new Vector2(getX() + width / 2, getY() + width / 2), player.
+        Bullet newBullet = new Bullet(this, new Vector2(getX() + width / 2, getY() + width / 2), player.
                 getX() + 10, player.getY() + 10);
         projectiles.add(newBullet);
         this.getStage().addActor(newBullet);

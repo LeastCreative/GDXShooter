@@ -2,6 +2,7 @@ package com.supershooter.game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 import com.supershooter.game.projectile.Projectile;
 
 /**
@@ -11,6 +12,7 @@ import com.supershooter.game.projectile.Projectile;
  */
 public abstract class GameActor extends Actor {
     protected Vector2 velocity = new Vector2();
+    protected Array<Projectile> projectiles = new Array<Projectile>();
     protected boolean isDestroyed;
 
     /**
@@ -30,4 +32,12 @@ public abstract class GameActor extends Actor {
      * Destroys this actor
      */
     public abstract void destroy();
+
+    /**
+     * @return the projectiles that belong to this actor
+     */
+    public Array<Projectile> getProjectiles(){
+        return projectiles;
+    }
+
 }
